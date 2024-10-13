@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Power Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #question, #result {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Math Power Game</h1>
+        <div id="question"></div>
+        <input type="number" id="answer" placeholder="Enter your answer">
+        <button id="submit">Submit</button>
+        <button id="generate">New Numbers</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let base, exponent;
+
+        function generateNumbers() {
+            // Генеруємо base від -10 до 10 з різними обмеженнями
+            let ranges = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            base = ranges[Math.floor(Math.random() * ranges.length)];
+
+            // Генеруємо exponent на основі значення base
+            if (Math.abs(base) <= 4) {
+                exponent = Math.floor(Math.random() * 11);  // від 0 до 10
+            } else if (Math.abs(base) === 5 || Math.abs(base) === 6) {
+                exponent = Math.floor(Math.random() * 6);  // від 0 до 5
+            } else if (Math.abs(base) >= 7 && Math.abs(base) <= 9) {
+                exponent = Math.floor(Math.random() * 4);  // від 0 до 3
+            } else if (base === 10 || base === -10) {
+                exponent = Math.floor(Math.random() * 11);  // від 0 до 10
+            }
+
+            document.getElementById('question').textContent = `What is ${base}^${exponent}?`;
+            document.getElementById('result').textContent = '';
+        }
+
+        function checkAnswer() {
+            const userAnswer = Number(document.getElementById('answer').value);
+            const correctAnswer = Math.pow(base, exponent);
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById('result').textContent = 'Correct! Great job!';
+            } else {
+                document.getElementById('result').textContent = `Wrong! The correct answer is ${correctAnswer}.`;
+            }
+        }
+
+        // Додаємо слухачі подій для кнопок
+        document.getElementById('submit').addEventListener('click', checkAnswer);
+        document.getElementById('generate').addEventListener('click', generateNumbers);
+
+        // Генеруємо перші числа під час завантаження сторінки
+        window.onload = generateNumbers;
+    </script>
+</body>
+</html>
